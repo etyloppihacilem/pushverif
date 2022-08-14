@@ -56,7 +56,7 @@ echo -e ""
 if [ $verbose -eq 1 ] ; then
 	echo -e "\033[34;40m git status -bs \033[0m"
 fi
-modifications=$(git status -bs | grep "#" | grep --color=always -o -e ".[0-9]*\[.*\]")
+modifications=$(git remote update 2>&1 | grep -o -e "" ; git status -bs | grep "#" | grep --color=always -o -e ".[0-9]*\[.*\]")
 if [[ $modifications ]] ; then
 	echo -e "\033[1;31;40m ERROR \033[0m: Repo is not up to date, 
 	$(git status -bs | grep "#")
