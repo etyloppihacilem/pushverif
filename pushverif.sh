@@ -9,13 +9,13 @@ echo -e "\033[1;34;40m##########################################################
 # on github !                                                      #
 #                                                                  #
 # Do not hesitate to share this repository, but remember using the #
-# git link to enable auto-updates.                                 #
+# github link to enable auto-updates.                              #
 #                                                                  #
 # TIP: to quickly share the script, use the\033[0;37;40m -p \033[1;34;40mflag :)             #
 ####################################################################\033[0m\n"
 
 verbose=0
-while getopts "vupr" opt; do
+while getopts "vuphr" opt; do
 	case $opt in
 		v)
 			verbose=1
@@ -34,6 +34,10 @@ while getopts "vupr" opt; do
 			;;
 		r)
 			x-www-browser https://github.com/etyloppihacilem/pushverif
+			exit
+			;;
+		h)
+			cat $(dirname $(realpath -P $0))/README.md
 			exit
 			;;
 	esac

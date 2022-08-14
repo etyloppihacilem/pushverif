@@ -1,10 +1,16 @@
 # Pushverif
-## Un script pour éviter les erreures de push stupides
-Lancer le script avec `./pushverif.sh` et ajouter le flag `-v` pour afficher les
-commandes :)
 
-Pour mettre votre script à jour, utilisez le flag `-u`.
+Use this script for your final check before pushing :)
 
-Enjoy et n'hésitez pas à me dm sur discord : `hmelica`
+`~/pushverif/pushverif.sh`
 
+## Flags
+`-h`	displays this help
+`-p`	share (display and copy link to the repo
+`-r`	reward (open the github page so you can give me a star :))
+`-u`	update
+`-v`	verbose
+
+
+*(The user is held solely responsible for the actions of the script on his computer)*
 *(L'utilisateur est tenu pour seul responsable des actions du script sur son ordinateur)*
