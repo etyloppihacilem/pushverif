@@ -59,7 +59,7 @@ fi
 trackedFiles=$(git ls-files)
 pbInFiles=0
 for file in $trackedFiles; do
-	inFile=$(cat $file | grep -n -e "main(.*)")
+	inFile=$(cat $file | sed -r ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N; ba' | grep -n -e "main(.*)")
 	if [[ $inFile ]]; then
 		toPrint=""
 		if [ $pbInFiles -eq 0 ]; then
