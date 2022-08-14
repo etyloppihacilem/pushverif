@@ -6,11 +6,23 @@ echo -e "\033[1;34;40m##########################################################
 # Bon code !                                                       #
 ####################################################################\033[0m\n"
 
+majRepo=$(cd $(dirname $(realpath $0)) ; git status -bs || grep -e "#" || grep -o -e ".[0-9]")
+if [ $majRepo ]; then
+	echo -e "\033[1;33;40m WARN \033[0m: New update avaliable ! Run with the flag\033[0;37;40m -u \033[0mto update :)"
+else
+	echo -e "\033[1;32;40m OK \033[0m: Script is up to date :)"
+fi
+
 verbose=0
-while getopts "v" opt; do
+while getopts "vu" opt; do
 	case $opt in
 		v)
 			verbose=1
+			;;
+		u)
+			upd=$(cd $(dirname $(realpath $0)) ; git pull -ff)
+			echo -e "\033[1;32;40m OK \033[0m: Script is up to date :)"
+			exit
 			;;
 	esac
 done
