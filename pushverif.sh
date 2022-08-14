@@ -71,21 +71,21 @@ fi
 trackedFiles=$(git ls-files)
 pbInFiles=0
 for file in $trackedFiles; do
-	inFile=$(cat $file | sed -r ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N; ba' | grep -n -e "main(.*)")
+	inFile=$(cat $file | sed -r ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N; ba' | grep -n -e "main.*(.*)" -e "printf.*(.*)")
 	if [[ $inFile ]]; then
 		toPrint=""
 		if [ $pbInFiles -eq 0 ]; then
-			toPrint="\033[1;33;40m WARN \033[0m: main detected in file(s)"
+			toPrint="\033[1;33;40m WARN \033[0m: forbidden function(s) detected in file(s)"
 			pbInFiles=1
 		fi
 		echo -e "
 $toPrint
 	\033[36;40m$file\033[0m
-	$(cat $file | grep --color=always -n -e "main(.*)")"
+	$(cat $file | grep --color=always -n -e "main(.*)" -e "printf.*(.*)")"
 	fi
 done
 if [ $pbInFiles -eq 0 ]; then
-	echo -e "\033[1;32;40m OK \033[0m: No main in tracked files"
+	echo -e "\033[1;32;40m OK \033[0m: No forbidden fonction in tracked files"
 else
 	echo -e ""
 fi
