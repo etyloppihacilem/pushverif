@@ -4,19 +4,31 @@ echo -e "\033[1;34;40m##########################################################
 # Ce script vous est proposé par\033[1;37;40m hmelica \033[1;34;40mpour tester votre code :) #
 # Utilisez le flag\033[0;37;40m -v \033[1;34;40mpour afficher les commandes utilisées.       #
 # Bon code !                                                       #
+# N'hesitez pas à partager ce repository, mais il est important    #
+# de bien le cloner pour pouvoir bénéficier des mises à jour       #
+# automatiques !                                                   #
+# TIP: pour le partager rapidement, essayez le flag\033[0;37;40m -p \033[1;34;40m            #
 ####################################################################\033[0m\n"
 
 verbose=0
-while getopts "vu" opt; do
+while getopts "vup" opt; do
 	case $opt in
 		v)
 			verbose=1
 			;;
 		u)
-			upd=$(cd $(dirname $(realpath $0)) ; git pull -ff)
+			upd=$(cd $(dirname $(realpath -P $0)) ; git pull -ff)
 			echo -e "\033[1;32;40m OK \033[0m: Script is up to date :)"
 			exit
 			;;
+		p)
+			echo -e "\033[1;32;40m OK \033[0m: repo link copied to clipboard :)"
+			echo -n "https://github.com/etyloppihacilem/pushverif.git" | xclip -sel clip
+			echo -e " Use it with 
+	\033[36;40mgit clone https://github.com/etyloppihacilem/pushverif.git\033[0m"
+			exit
+			;;
+			
 	esac
 done
 
