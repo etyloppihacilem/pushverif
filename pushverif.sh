@@ -89,10 +89,9 @@ for file in $trackedFiles; do
 			toPrint="\033[1;33;40m WARN \033[0m: forbidden function(s) detected in file(s)"
 			pbInFiles=1
 		fi
-		echo -e "
-$toPrint
-	\033[36;40m$file\033[0m
-	$(cat $file | grep --color=always -n -e "main(.*)" -e "printf.*(.*)")"
+		echo -e "$toPrint"
+		echo -e "\033[36;40m$file\033[0m
+$(cat $file | grep --color=always -n -e "main(.*)" -e "printf.*(.*)")" | sed "s/^/\t/"
 	fi
 done
 if [ $pbInFiles -eq 0 ]; then
