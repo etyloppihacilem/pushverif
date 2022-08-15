@@ -104,8 +104,8 @@ if [ $verbose -eq 1 ] ; then
 fi
 norminette=$($(echo "norminette -R CheckForbiddenSourceHeader $trackedFiles" | sed "s/'//"))
 if [[ $(echo $norminette | grep -i "error") ]]; then
-	echo -e "\033[1;31;40m ERROR \033[0m: Norm error(s)"
-	echo -e "$(norminette -R CheckForbiddenSourceHeader | grep --color=always -i "error" | sed "s/^/\t/") \n" 
+	echo -e "\033[1;31;40m ERROR \033[0m: Norm error(s) on tracked file(s)"
+	echo -e "$($(echo "norminette -R CheckForbiddenSourceHeader $trackedFiles" | sed "s/'//") | grep --color=always -i "error" | sed "s/^/\t/") \n" 
 else 
 	echo -e "\033[1;32;40m OK \033[0m: Norm ok for all tracked files"
 fi
