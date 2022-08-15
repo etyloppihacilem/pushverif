@@ -45,7 +45,7 @@ done
 
 majRepo=$(cd $(dirname $(realpath $0)) ; git remote update 2>&1 | grep -o -e "" ; git status -bs | grep -e "#" | grep -o -e ".[0-9]")
 if [[ $majRepo ]]; then
-	echo -e "\033[1;33;40m WARN \033[0m: New update avaliable ! Run with the flag\033[0;37;40m -u \033[0mto update :\)"
+	echo -e "\033[1;33;40m WARN \033[0m: New update avaliable ! Run with the flag\033[0;37;40m -u \033[0mto update :)"
 else
 	echo -e "\033[1;32;40m OK \033[0m: Script is up to date :)"
 fi
