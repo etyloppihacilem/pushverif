@@ -111,17 +111,17 @@ else
 fi
 
 if [ $verbose -eq 1 ] ; then
-	echo -e "\033[34;40m gcc -fsyntax-only -Wall -Werror -Wextra \033[0m"
+	echo -e "\033[34;40m gcc -Wall -Werror -Wextra -o /tmp/DoNotOpen.out\033[0m"
 fi
 echo -e "";
 pbInFiles=0
 trackedFiles=$(git ls-files | grep -e ".*\.c")
 for file in $trackedFiles; do
-	compil=$(gcc -fdiagnostics-color=always -fsyntax-only -Wall -Werror -Wextra $file 2>&1)
+	compil=$(gcc -fdiagnostics-color=always -Wall -Werror -Wextra -o /tmp/DoNotOpen.out $file 2>&1)
 	if [[ $compil ]]; then
 		pbInFiles=1
 		echo -e "\t\033[1;31;40m ERROR \033[0m: $file does not compile :"
-		echo -e "$(gcc -fdiagnostics-color=always -fsyntax-only -Wall -Werror -Wextra $file 2>&1 | sed "s/^/\t/")\n"
+		echo -e "$(gcc -fdiagnostics-color=always -Wall -Werror -Wextra -o /tmp/DoNotOpen.out $file 2>&1 | sed "s/^/\t/")\n"
 	else
 		echo -e "\t\033[1;32;40m OK \033[0m: $file does compile"
 	fi
