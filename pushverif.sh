@@ -59,7 +59,7 @@ if [ $statusLines -eq 0 ] ; then
 	echo -e "\033[1;32;40m OK \033[0m: All files commited :
 \033[32;40m$(git ls-files | sed "s/^/\t/")\033[0m"
 else
-	echo -e "\033[1;31;40m ERROR \033[0m: Some files are uncommited : 
+	echo -e "\033[1;33;40m WARN \033[0m: Some files are uncommited : 
 \033[35;40m$(git status -s | sed "s/^/\t/")\033[0m"
 fi
 echo -e ""
