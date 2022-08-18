@@ -117,11 +117,11 @@ echo -e "";
 pbInFiles=0
 trackedFiles=$(git ls-files | grep -e ".*\.c")
 for file in $trackedFiles; do
-	compil=$(gcc -fdiagnostics-color=always -c -Wall -Werror -Wextra -o /tmp/DoNotOpen.out $file 2>&1)
+	compil=$(gcc -fdiagnostics-color=always -c -Wall -Werror -Wextra -o /tmp/DoNotOpen_$USER.out $file 2>&1)
 	if [[ $compil ]]; then
 		pbInFiles=1
 		echo -e "\t\033[1;31;40m ERROR \033[0m: $file does not compile :"
-		echo -e "$(gcc -fdiagnostics-color=always -c -Wall -Werror -Wextra -o /tmp/DoNotOpen.out $file 2>&1 | sed "s/^/\t/")\n"
+		echo -e "$(gcc -fdiagnostics-color=always -c -Wall -Werror -Wextra -o /tmp/DoNotOpen_$USER.out $file 2>&1 | sed "s/^/\t/")\n"
 	else
 		echo -e "\t\033[1;32;40m OK \033[0m: $file does compile"
 	fi
