@@ -82,7 +82,7 @@ fi
 trackedFiles=$(git ls-files)
 pbInFiles=0
 for file in $trackedFiles; do
-	inFile=$(cat $file | sed -e 's/^\/\/.*main.*\(.*\)//' -r -e ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N;ba' | grep -n -e "main.*(.*)" -e "printf.*(.*)")
+	inFile=$(cat $file | sed -e "s/\/\/.*//" -r -e ":a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N;ba" | grep -n -e "main.*(.*)" -e "printf.*(.*)")
 	if [[ $inFile ]]; then
 		toPrint=""
 		if [ $pbInFiles -eq 0 ]; then
@@ -90,8 +90,8 @@ for file in $trackedFiles; do
 			pbInFiles=1
 		fi
 		echo -e "$toPrint"
-		echo -e "\033[36;40m$file\033[0m
-$(cat $file | grep --color=always -n -e "main(.*)" -e "printf.*(.*)")" | sed "s/^/\t/"
+		echo -e "\t\033[36;40m$file\033[0m
+$(cat $file | sed -e 's/\/\/.*//' -r -e ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N;ba' | grep --color=always -n -e "main.*(.*)" -e "printf.*(.*)" | sed "s/^/\t/")"
 	fi
 done
 if [ $pbInFiles -eq 0 ]; then
