@@ -8,6 +8,9 @@ echo -e "\033[1;34;40m##########################################################
 # If you like the script, use the\033[0;37;40m -r \033[1;34;40mflag to give the repo a star  #
 # on github !                                                      #
 #                                                                  #
+# If you do not want to check for \033[0;37;40mmain()\033[1;34;40m in your files, use the    #
+# the\033[0;37;40m -i \033[1;34;40mflag to ignore.                                           #
+#                                                                  #
 # Do not hesitate to share this repository, but remember using the #
 # github link to enable auto-updates.                              #
 #                                                                  #
@@ -15,7 +18,8 @@ echo -e "\033[1;34;40m##########################################################
 ####################################################################\033[0m\n"
 
 verbose=0
-while getopts "vuphr" opt; do
+checkMain=1
+while getopts "vuphir" opt; do
 	case $opt in
 		v)
 			verbose=1
@@ -39,6 +43,9 @@ while getopts "vuphr" opt; do
 		h)
 			cat $(dirname $(realpath -P $0))/README.md
 			exit
+			;;
+		i)
+			checkMain=0
 			;;
 	esac
 done
@@ -82,7 +89,11 @@ fi
 trackedFiles=$(git ls-files)
 pbInFiles=0
 for file in $trackedFiles; do
-	inFile=$(cat $file | sed -e "s/\/\/.*//" -r -e ":a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N;ba" | grep -n -e "main.*(.*)" -e "printf.*(.*)")
+	if [ $checkMain -eq 1 ]; then
+		inFile=$(cat $file | sed -e "s/\/\/.*//" -r -e ":a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N;ba" | grep -n -e "main.*(.*)" -e "printf.*(.*)")
+	else
+		inFile=$(cat $file | sed -e "s/\/\/.*//" -r -e ":a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N;ba" | grep -n -e "printf.*(.*)")
+	fi
 	if [[ $inFile ]]; then
 		toPrint=""
 		if [ $pbInFiles -eq 0 ]; then
@@ -90,8 +101,13 @@ for file in $trackedFiles; do
 			pbInFiles=1
 		fi
 		echo -e "$toPrint"
-		echo -e "\t\033[36;40m$file\033[0m
+		if [ $checkMain -eq 1 ]; then
+			echo -e "\t\033[36;40m$file\033[0m
 $(cat $file | sed -e 's/\/\/.*//' -r -e ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N;ba' | grep --color=always -n -e "main.*(.*)" -e "printf.*(.*)" | sed "s/^/\t/")"
+		else
+			echo -e "\t\033[36;40m$file\033[0m
+$(cat $file | sed -e 's/\/\/.*//' -r -e ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N;ba' | grep --color=always -n -e "printf.*(.*)" | sed "s/^/\t/")"
+		fi
 	fi
 done
 if [ $pbInFiles -eq 0 ]; then
