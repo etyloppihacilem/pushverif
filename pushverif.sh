@@ -118,6 +118,7 @@ fi
 if [ $verbose -eq 1 ] ; then
 	echo -e "\033[34;40m norminette -R CheckForbiddenSourceHeader \033[0m"
 fi
+trackedFiles=$(git ls-files | grep -e ".*\.c" -e ".*\.h" -e "Makefile")
 norminette=$($(echo "norminette -R CheckForbiddenSourceHeader $trackedFiles" | sed "s/'//"))
 if [[ $(echo $norminette | grep -i "error") ]]; then
 	echo -e "\033[1;31;40m ERROR \033[0m: Norm error(s) on tracked file(s)"
