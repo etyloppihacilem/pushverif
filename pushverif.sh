@@ -90,9 +90,9 @@ trackedFiles=$(git ls-files)
 pbInFiles=0
 for file in $trackedFiles; do
 	if [ $checkMain -eq 1 ]; then
-		inFile=$(cat $file | sed -e "s/\/\/.*//" -r -e ":a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N;ba" | grep -n -e "main.*(.*)" -e "printf.*(.*)")
+		inFile=$(cat $file | sed -e "/\/\*/,/\*\//d" | grep -n -e "main.*(.*)" -e "printf.*(.*)")
 	else
-		inFile=$(cat $file | sed -e "s/\/\/.*//" -r -e ":a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N;ba" | grep -n -e "printf.*(.*)")
+		inFile=$(cat $file | sed -e "/\/\*/,/\*\//d" | grep -n -e "printf.*(.*)")
 	fi
 	if [[ $inFile ]]; then
 		toPrint=""
@@ -103,10 +103,10 @@ for file in $trackedFiles; do
 		echo -e "$toPrint"
 		if [ $checkMain -eq 1 ]; then
 			echo -e "\t\033[36m$file\033[0m
-$(cat $file | sed -e 's/\/\/.*//' -r -e ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N;ba' | grep --color=always -n -e "main.*(.*)" -e "printf.*(.*)" | sed "s/^/\t/")"
+$(cat $file | sed -e 's/\/\/.*//' -r -e '/\/\*/,/\*\//d' | grep --color=always -n -e "main.*(.*)" -e "printf.*(.*)" | sed "s/^/\t/")"
 		else
 			echo -e "\t\033[36m$file\033[0m
-$(cat $file | sed -e 's/\/\/.*//' -r -e ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N;ba' | grep --color=always -n -e "printf.*(.*)" | sed "s/^/\t/")"
+$(cat $file | sed -e 's/\/\/.*//' -r -e '/\/\*/,/\*\//d' | grep --color=always -n -e "printf.*(.*)" | sed "s/^/\t/")"
 		fi
 	fi
 done
