@@ -1,25 +1,9 @@
 #!/bin/bash
 
-echo -e "\033[1;34m####################################################################
-# This script was written by\033[1;37m hmelica \033[1;34mto test your code :)          #
-# Use the\033[0;37m -v \033[1;34mflag to enable verbose and see used commands.         #
-# Happy coding !                                                   #
-#                                                                  #
-# If you like the script, use the\033[0;37m -r \033[1;34mflag to give the repo a star  #
-# on github !                                                      #
-#                                                                  #
-# If you do not want to check for \033[0;37mmain()\033[1;34m in your files, use the    #
-# the\033[0;37m -i \033[1;34mflag to ignore.                                           #
-#                                                                  #
-# Do not hesitate to share this repository, but remember using the #
-# github link to enable auto-updates.                              #
-#                                                                  #
-# TIP: to quickly share the script, use the\033[0;37m -p \033[1;34mflag :)             #
-####################################################################\033[0m\n"
-
 verbose=0
 checkMain=1
-while getopts "vuphir" opt; do
+silent=0
+while getopts "vuphirs" opt; do
 	case $opt in
 		v)
 			verbose=1
@@ -47,18 +31,40 @@ while getopts "vuphir" opt; do
 		i)
 			checkMain=0
 			;;
+		s)
+			silent=1
+			;;
 	esac
 done
 
-majRepo=$(cd $(dirname $(realpath $0)) ; git remote update 2>&1 | grep -o -e "" ; git status -bs | grep -e "#" | grep -o -e ".[0-9]")
-if [[ $majRepo ]]; then
-	echo -e "\033[1;33m WARN \033[0m: New update avaliable ! Run with the flag\033[0;37m -u \033[0mto update :)"
-else
-	echo -e "\033[1;32m OK \033[0m: Script is up to date :)"
-fi
+if ! [ silent ]; then
+	echo -e "\033[1;34m####################################################################
+# This script was written by\033[1;37m hmelica \033[1;34mto test your code :)          #
+# Use the\033[0;37m -v \033[1;34mflag to enable verbose and see used commands.         #
+# Happy coding !                                                   #
+#                                                                  #
+# If you like the script, use the\033[0;37m -r \033[1;34mflag to give the repo a star  #
+# on github !                                                      #
+#                                                                  #
+# If you do not want to check for \033[0;37mmain()\033[1;34m in your files, use the    #
+# the\033[0;37m -i \033[1;34mflag to ignore.                                           #
+#                                                                  #
+# Do not hesitate to share this repository, but remember using the #
+# github link to enable auto-updates.                              #
+#                                                                  #
+# TIP: to quickly share the script, use the\033[0;37m -p \033[1;34mflag :)             #
+####################################################################\033[0m\n"
 
-if [ $verbose -eq 1 ] ; then
-	echo -e "\033[34m git status -s \033[0m"
+	majRepo=$(cd $(dirname $(realpath $0)) ; git remote update 2>&1 | grep -o -e "" ; git status -bs | grep -e "#" | grep -o -e ".[0-9]")
+	if [[ $majRepo ]]; then
+		echo -e "\033[1;33m WARN \033[0m: New update avaliable ! Run with the flag\033[0;37m -u \033[0mto update :)"
+	else
+		echo -e "\033[1;32m OK \033[0m: Script is up to date :)"
+	fi
+
+	if [ $verbose -eq 1 ] ; then
+		echo -e "\033[34m git status -s \033[0m"
+	fi
 fi
 
 statusLines=$(git status -s | wc -l)
